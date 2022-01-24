@@ -3,6 +3,7 @@ package middleware
 import (
 	"bytes"
 	"fmt"
+	"gin-self/extend/utils/helpers"
 	"io"
 	"io/ioutil"
 	"net"
@@ -12,9 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"gin-self/extend/e"
-	"gin-self/extend/helpers"
 	"gin-self/extend/self_loger"
+	"gin-self/extend/utils/e"
 
 	"github.com/gin-gonic/gin"
 )

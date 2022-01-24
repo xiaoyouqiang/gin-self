@@ -5,9 +5,9 @@ package middleware
 */
 
 import (
-	"gin-self/extend/e"
-	"gin-self/extend/helpers"
-	"gin-self/extend/my_jwt"
+	"gin-self/extend/self_jwt"
+	"gin-self/extend/utils/e"
+	"gin-self/extend/utils/helpers"
 	"github.com/dgrijalva/jwt-go"
 
 	"github.com/gin-gonic/gin"
@@ -43,7 +43,7 @@ func CheckToken() gin.HandlerFunc {
 		var tokenData = jwt.MapClaims{}
 		var err error
 		if token != "" {
-			tokenData, err = my_jwt.ParseToken(token)
+			tokenData, err = self_jwt.ParseToken(token)
 		}
 
 		if err != nil && isNeedLogin(c) {

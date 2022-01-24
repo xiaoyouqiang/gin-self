@@ -22,11 +22,6 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 	return w.ResponseWriter.Write(b)
 }
 
-func (w bodyLogWriter) WriteClear(b []byte) (int, error) {
-	w.body.Reset()
-	return w.ResponseWriter.Write(b)
-}
-
 func LogMiddleWare() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		logger := self_loger.GetInstance()
@@ -61,7 +56,7 @@ func LogMiddleWare() gin.HandlerFunc {
 			"exec_time":   execTime,
 			"client_ip":   c.ClientIP(),
 			"trace_info": logrus.Fields {
-				"header_params": c.Request.Header, //c.GetHeader("Cookie"),后续着重记录一些特定的头，不用记录所有header
+				//"header_params": c.Request.Header, //c.GetHeader("Cookie"),后续着重记录一些特定的头，不用记录所有header
 				"post_params"	:	c.Request.PostForm,
 				"response":      blw.body.String(),
 				"sql":           trace.ValueSqlInfo(),

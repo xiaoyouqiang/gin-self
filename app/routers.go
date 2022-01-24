@@ -2,8 +2,10 @@ package app
 
 import (
 	"gin-self/app/demo"
-	"gin-self/extend/e"
+	"gin-self/core/env"
 	"gin-self/extend/middleware"
+	"gin-self/extend/utils/e"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +19,10 @@ func IncludeRoute() *gin.Engine {
 	//router.Use(middleware.CheckToken())
 	//router.Use(middleware.CheckSign())
 	router.Use(middleware.Recovery())
+
+	if !env.IsPro() {
+		pprof.Register(router) // register pprof to gin
+	}
 
 	gin.SetMode(gin.ReleaseMode)
 
