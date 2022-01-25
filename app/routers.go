@@ -13,7 +13,6 @@ func IncludeRoute() *gin.Engine {
 	router := gin.New()
 	router.Use(middleware.LogMiddleWare())
 	router.Use(middleware.TimeOut())
-	router.Use(middleware.GetUserInfo())
 	router.Use(middleware.SetDbContext())
 	router.Use(middleware.SetRedisContext())
 	//router.Use(middleware.CheckToken())
