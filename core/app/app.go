@@ -91,7 +91,7 @@ func (a *App) shutdown() {
 }
 
 func (a *App) InitMysql() {
-	self_db.Open("test")
+	self_db.Open()
 }
 
 func (a *App) InitRedis() {

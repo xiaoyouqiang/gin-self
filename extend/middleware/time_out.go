@@ -13,8 +13,8 @@ import (
 )
 
 func TimeOut() gin.HandlerFunc {
+	timeOut := config.Get("server", "global_timeout").MustInt()
 	return func(c *gin.Context) {
-		timeOut := config.Get("server", "global_timeout").MustInt()
 		ctx, cancel := context.WithTimeout(c.Request.Context(), time.Duration(timeOut) * time.Second)
 		defer func() {
 			cancel()

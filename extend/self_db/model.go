@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"gin-self/extend/config"
@@ -36,13 +37,26 @@ func WithContext(c context.Context) {
 	}
 }
 
-func Open(dbName string) {
-	var err error
-
-	if _, ok := dbPool[dbName]; ok {
-		return
+func Open() {
+	needInitDatabases := strings.TrimSpace(config.Get("app", "need_init_database").String())
+	if needInitDatabases == "" {
+		log.Fatalln("not init_databases config for app")
 	}
+	databaseArray := strings.Split(needInitDatabases,",")
+	for _,dbNameItem := range databaseArray {
+		dbName := strings.TrimSpace(dbNameItem)
+		if dbName == "" {
+			continue
+		}
+		if _, ok := dbPool[dbName]; ok {
+			//该库已经初始化
+			continue
+		}
+		connect(dbName)
+	}
+}
 
+func connect(dbName string)  {
 	dbConfigSection := "database-" + dbName
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		config.Get(dbConfigSection, "user").String(),
