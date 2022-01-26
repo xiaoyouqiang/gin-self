@@ -59,11 +59,21 @@ func NewQueryBuilder() *{{.QueryBuilderName}} {
 	}
 }
 
+func (qb *{{.QueryBuilderName}}) WithNew() *{{.QueryBuilderName}} {
+	qb.where = nil
+	qb.order = nil
+	qb.fields.args = nil
+	qb.fields.query = nil
+	qb.limit = 0
+	qb.offset = 0
+	return qb
+}
+
 func (qb *{{.QueryBuilderName}}) getDbConn() *gorm.DB {
 	return qb.db
 }
 
-func (qb *{{.QueryBuilderName}}) Create(model {{.StructName}}) (id int32, err error) {
+func (qb *{{.QueryBuilderName}}) Create(model {{.StructName}}) (id {{.PkFieldType}}, err error) {
 	if err = qb.db.Create(&model).Error; err != nil {
 		return 0, errors.Wrap(err, "create err")
 	}

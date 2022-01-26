@@ -47,6 +47,16 @@ func NewQueryBuilder() *Test1ModelQueryBuilder {
 	}
 }
 
+func (qb *Test1ModelQueryBuilder) WithNew() *Test1ModelQueryBuilder {
+	qb.where = nil
+	qb.order = nil
+	qb.fields.args = nil
+	qb.fields.query = nil
+	qb.limit = 0
+	qb.offset = 0
+	return qb
+}
+
 func (qb *Test1ModelQueryBuilder) getDbConn() *gorm.DB {
 	return qb.db
 }

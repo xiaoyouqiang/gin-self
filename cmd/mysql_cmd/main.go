@@ -153,13 +153,16 @@ func genCurdFile(filepath, tableName string, columnInfo []tableColumnInfo)  {
 		PkgName string
 		StructName string
 		PkFieldName string
+		PkFieldType string
 	}
 
+	pkField,pkFieldType := getPkField(columnInfo)
 	var data = curdStruct {
 		convertUpperCamelCase(tableName) + "ModelQueryBuilder",
 		tableName + "_model",
 		convertUpperCamelCase(tableName),
-		getPkField(columnInfo),
+		pkField,
+		pkFieldType,
 	}
 	err = pkg.CurdTemplate.Execute(curlFile, data)
 	if err != nil {
@@ -169,14 +172,14 @@ func genCurdFile(filepath, tableName string, columnInfo []tableColumnInfo)  {
 }
 
 //获得主键字段名称
-func getPkField(columnInfo []tableColumnInfo)  string {
+func getPkField(columnInfo []tableColumnInfo)  (string,string) {
 	for _,column := range columnInfo {
 		if column.ColumnKey.String == "PRI" {
-			return convertUpperCamelCase(column.ColumnName)
+			return convertUpperCamelCase(column.ColumnName),pkg.GetGoTypeBySqlType(column.DataType)
 		}
 	}
 
-	return ""
+	return "",""
 }
 
 func getTables(db *gorm.DB, dbName string, tableName string) ([]tableInfo, error) {
@@ -274,34 +277,4 @@ func convertUpperCamelCase(s string) string {
 		}
 	}
 	return upperStr
-}
-
-func getGoTypeToSqlType(sqlType string) string {
-	var mysqlToGoMap = map[string]string{
-		"tinyint":    "int8",
-		"smallint":   "int32",
-		"mediumint":  "int32",
-		"int":        "int32",
-		"integer":    "int64",
-		"bigint":     "int64",
-		"float":      "float64",
-		"double":     "float64",
-		"decimal":    "float64",
-		"date":       "string",
-		"time":       "string",
-		"year":       "string",
-		"datetime":   "time.Time",
-		"timestamp":  "time.Time",
-		"char":       "string",
-		"varchar":    "string",
-		"tinyblob":   "string",
-		"tinytext":   "string",
-		"blob":       "string",
-		"text":       "string",
-		"mediumblob": "string",
-		"mediumtext": "string",
-		"longblob":   "string",
-		"longtext":   "string",
-	}
-	return mysqlToGoMap[sqlType]
 }

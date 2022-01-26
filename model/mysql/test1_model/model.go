@@ -10,14 +10,13 @@ import (
 	"time"
 )
 
-// Test1  
+// Test1 测试表 
 type Test1 struct {
  	Id int32 ` gorm:"primaryKey" json:"id" ` //
+ 	GoodsId int64 `  json:"goods_id" ` //
  	Name string `  json:"name" ` //
- 	GoodsId int32 `  json:"goods_id" ` //
  	CreatedTime int32 `  json:"created_time" ` //
  	UpdatedTime int32 `  json:"updated_time" ` //
- 	DeletedTime int32 `  json:"deleted_time" ` //
 }
 
 func (t Test1) TableName() string {

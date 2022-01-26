@@ -26,7 +26,7 @@ func convertUpperCamelCase(s string) string {
 	return upperStr
 }
 
-func getGoTypeBySqlType(sqlType string) string {
+func GetGoTypeBySqlType(sqlType string) string {
 	var mysqlTypeGoTypeMap = map[string]string{
 		"tinyint":    "int32",
 		"smallint":   "int32",
@@ -40,6 +40,7 @@ func getGoTypeBySqlType(sqlType string) string {
 		"date":       "string",
 		"time":       "string",
 		"year":       "string",
+		"enum":       "string",
 		"datetime":   "time.Time",
 		"timestamp":  "time.Time",
 		"char":       "string",
@@ -58,7 +59,7 @@ func getGoTypeBySqlType(sqlType string) string {
 
 func newModelParse(templateStr string) *template.Template {
 	tpl, err := template.New("model_template").
-		Funcs(template.FuncMap{"convertUpperCamelCase": convertUpperCamelCase,"getGoTypeBySqlType":getGoTypeBySqlType}).
+		Funcs(template.FuncMap{"convertUpperCamelCase": convertUpperCamelCase,"GetGoTypeBySqlType":GetGoTypeBySqlType}).
 		Parse(templateStr)
 	if err != nil {
 		panic(err)
@@ -91,7 +92,7 @@ type {{.StructName}} struct {
 	{{- $tag = " json:\"" | printf "%s%s" $tag -}}
 	{{- $tag =  .ColumnName | printf "%s%s" $tag -}}
 	{{- $tag =  "\"" | printf "%s%s"  $tag -}}
-   	{{- .ColumnName | convertUpperCamelCase}} {{.DataType | getGoTypeBySqlType}} {{$quote}} {{$tag}} {{$quote}} //{{.ColumnComment.String -}}
+   	{{- .ColumnName | convertUpperCamelCase}} {{.DataType | GetGoTypeBySqlType}} {{$quote}} {{$tag}} {{$quote}} //{{.ColumnComment.String -}}
 {{- end}}
 }
 
