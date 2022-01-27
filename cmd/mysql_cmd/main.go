@@ -154,6 +154,7 @@ func genCurdFile(filepath, tableName string, columnInfo []tableColumnInfo)  {
 		StructName string
 		PkFieldName string
 		PkFieldType string
+		Quote string
 	}
 
 	pkField,pkFieldType := getPkField(columnInfo)
@@ -163,6 +164,7 @@ func genCurdFile(filepath, tableName string, columnInfo []tableColumnInfo)  {
 		convertUpperCamelCase(tableName),
 		pkField,
 		pkFieldType,
+		"`",
 	}
 	err = pkg.CurdTemplate.Execute(curlFile, data)
 	if err != nil {

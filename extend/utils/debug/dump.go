@@ -13,5 +13,5 @@ func VarDump(a ...interface{}) {
 
 //HttpVarDump 输出到 http
 func HttpVarDump(c *gin.Context, a ...interface{}) {
-	c.String(e.SUCCESS, spew.Sdump(a...))
+	c.String(e.Success, spew.Sdump(a...))
 }

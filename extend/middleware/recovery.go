@@ -96,7 +96,7 @@ func CustomRecoveryWithWriter(out io.Writer, handle RecoveryFunc) gin.HandlerFun
 					c.Error(err.(error)) // nolint: errcheck
 					c.Abort()
 				} else {
-					helpers.ApiError(c, e.ERROR, fmt.Sprintf("%s", err))
+					helpers.ApiError(c, e.Error, fmt.Sprintf("%s", err))
 				}
 			}
 		}()

@@ -35,7 +35,7 @@ func CheckToken() gin.HandlerFunc {
 		token := c.GetHeader("token")
 
 		if token == "" && isNeedLogin(c) {
-			helpers.ApiError(c, e.AUTH_FAIL)
+			helpers.ApiError(c, e.AuthFail)
 			c.Abort()
 			return
 		}
@@ -47,17 +47,17 @@ func CheckToken() gin.HandlerFunc {
 		}
 
 		if err != nil && isNeedLogin(c) {
-			helpers.ApiError(c, e.AUTH_FAIL)
+			helpers.ApiError(c, e.AuthFail)
 			c.Abort()
 			return
 		}
 		if _, ok := tokenData["data"]; !ok && isNeedLogin(c)  {
-			helpers.ApiError(c, e.AUTH_FAIL)
+			helpers.ApiError(c, e.AuthFail)
 			c.Abort()
 			return
 		}
 		if isNeedLogin(c) && tokenData["data"].(map[string]interface{})["user_id"] == "" {
-			helpers.ApiError(c, e.AUTH_FAIL)
+			helpers.ApiError(c, e.AuthFail)
 			c.Abort()
 			return
 		}

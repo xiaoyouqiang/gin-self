@@ -9,7 +9,7 @@ import (
 
 func ApiSuccess(c *gin.Context, data interface{}) {
 	traceId := self_loger.GetTraceByCtx(c).ValueTraceId()
-	c.JSON(e.SUCCESS, gin.H{"code": e.SUCCESS, "message": e.GetMessage(e.SUCCESS), "data": data, "trace_id": traceId})
+	c.JSON(e.Success, gin.H{"code": e.Success, "message": e.GetMessage(e.Success), "data": data, "trace_id": traceId})
 }
 
 //ApiError 错误返回
@@ -26,5 +26,5 @@ func ApiError(c *gin.Context, code int, message ...string) {
 	}
 
 	traceId := self_loger.GetTraceByCtx(c).ValueTraceId()
-	c.JSON(e.SUCCESS, gin.H{"code": code, "message": newMessage, "data": gin.H{}, "trace_id": traceId})
+	c.JSON(e.Success, gin.H{"code": code, "message": newMessage, "data": gin.H{}, "trace_id": traceId})
 }

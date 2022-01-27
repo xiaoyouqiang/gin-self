@@ -33,7 +33,7 @@ func CheckSign() gin.HandlerFunc {
 		var headerData = map[string]string{}
 		for key,_ := range needSignHeader {
 			if c.GetHeader(key) == "" {
-				helpers.ApiError(c, e.SIGN_ERROR,"not enough sign param")
+				helpers.ApiError(c, e.SignError,"not enough sign param")
 				c.Abort()
 				return
 			}
@@ -43,7 +43,7 @@ func CheckSign() gin.HandlerFunc {
 		//获取 appSecret
 		appSecret,ok := getAppSecret(c.GetHeader("appid"), c.GetHeader("appkey"))
 		if !ok {
-			helpers.ApiError(c, e.SIGN_ERROR,"app key error")
+			helpers.ApiError(c, e.SignError,"app key error")
 			c.Abort()
 			return
 		}
@@ -62,7 +62,7 @@ func CheckSign() gin.HandlerFunc {
 
 		//校验提交的签名与服务器生成的签名
 		if serverSign != c.GetHeader("sign") {
-			helpers.ApiError(c, e.SIGN_ERROR,"sign error")
+			helpers.ApiError(c, e.SignError,"sign error")
 			c.Abort()
 			return
 		}

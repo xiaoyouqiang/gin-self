@@ -35,8 +35,8 @@ func Open(instanceName string) {
 		MaxRetries:   config.Get(section, "max_try").MustInt(3),
 		PoolSize:     config.Get(section, "pool_size").MustInt(10),
 		MinIdleConns: config.Get(section, "min_conn").MustInt(10),
-		ReadTimeout:  time.Duration(config.Get(section, "read_timeout").MustInt(2)),
-		WriteTimeout:  time.Duration(config.Get(section, "write_timeout").MustInt(2)),
+		ReadTimeout:  time.Duration(config.Get(section, "read_timeout").MustInt(2)) * time.Second,
+		WriteTimeout:  time.Duration(config.Get(section, "write_timeout").MustInt(2)) * time.Second,
 	})
 
 	if err := client.Ping().Err(); err != nil {
@@ -82,7 +82,7 @@ func (c *resource) Set(key, value string, ttl time.Duration) error {
 				"set",
 				key,
 				value,
-				ttl.Minutes(),
+				ttl.Seconds(),
 				time.Since(ts).Seconds(),
 			)
 	}()

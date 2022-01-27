@@ -6,6 +6,7 @@ import (
 	"gin-self/extend/self_db"
 	"gin-self/extend/self_redis"
 	"gin-self/extend/utils/debug"
+	"gin-self/extend/utils/e"
 	"gin-self/extend/utils/helpers"
 	"gin-self/extend/utils/request"
 	"gin-self/model/mysql/test1_model"
@@ -58,7 +59,11 @@ func Index2(c *gin.Context) {
 		req request_validator.Register
 	)
 
-	request.ParseRequest(c, &req)
+	err := request.ParseRequest(c, &req)
+	if  err != nil {
+		helpers.ApiError(c, e.ParamError)
+		return
+	}
 
 	helpers.ApiSuccess(c, req)
 }

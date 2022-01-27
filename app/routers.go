@@ -27,7 +27,7 @@ func IncludeRoute() *gin.Engine {
 
 	//404 handler
 	router.NoRoute(func(c *gin.Context) {
-		code := e.NOT_FOUND
+		code := e.NotFound
 		c.JSON(404, gin.H{"code": code, "message": e.GetMessage(code)})
 	})
 

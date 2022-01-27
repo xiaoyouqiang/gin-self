@@ -1,25 +1,25 @@
 package e
 
 const (
-	SUCCESS      = 200
-	ERROR        = 500
-	PARAM_ERROR  = 400
-	NOT_FOUND    = 404
-	LOGIC_ERROR  = 600
-	AUTH_FAIL    = 401
-	TOKEN_EXPIRE = 10002
-	SIGN_ERROR = 10003
+	Success      = 200
+	Error        = 500
+	ParamError  = 400
+	NotFound    = 404
+	LogicError  = 600
+	AuthFail    = 401
+	TokenExpire = 10002
+	SignError = 10003
 )
 
 var message = map[int]string {
-	SUCCESS:      "ok",
-	ERROR:        "fail",
-	PARAM_ERROR:  "请求参数错误", //各业务逻辑各自的参数错误，可以重写该message
-	NOT_FOUND:    "404 error",
-	LOGIC_ERROR:  "业务逻辑错误", //各业务逻辑各自的错误，可以重写该message
-	AUTH_FAIL:    "鉴权失败",
-	TOKEN_EXPIRE: "token过期",
-	SIGN_ERROR:   "签名错误",
+	Success:      "ok",
+	Error:        "fail",
+	ParamError:  "请求参数错误", //各业务逻辑各自的参数错误，可以重写该message
+	NotFound:    "404 error",
+	LogicError:  "业务逻辑错误", //各业务逻辑各自的错误，可以重写该message
+	AuthFail:    "鉴权失败",
+	TokenExpire: "token过期",
+	SignError:   "签名错误",
 }
 
 func GetMessage(code int) string {
@@ -28,5 +28,5 @@ func GetMessage(code int) string {
 		return msg
 	}
 
-	return message[ERROR]
+	return message[Error]
 }

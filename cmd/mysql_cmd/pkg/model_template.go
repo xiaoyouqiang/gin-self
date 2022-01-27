@@ -92,7 +92,7 @@ type {{.StructName}} struct {
 	{{- $tag = " json:\"" | printf "%s%s" $tag -}}
 	{{- $tag =  .ColumnName | printf "%s%s" $tag -}}
 	{{- $tag =  "\"" | printf "%s%s"  $tag -}}
-   	{{- .ColumnName | convertUpperCamelCase}} {{.DataType | GetGoTypeBySqlType}} {{$quote}} {{$tag}} {{$quote}} //{{.ColumnComment.String -}}
+   	{{- .ColumnName | convertUpperCamelCase}} {{.DataType | GetGoTypeBySqlType}} {{$quote}} {{$tag}} {{$quote}} //{{- .ColumnComment.String -}}
 {{- end}}
 }
 

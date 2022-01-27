@@ -196,7 +196,7 @@ func (qb *{{.QueryBuilderName}}) WhereOp(field string, op self_db.SqlOp, value i
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", field, op),
+		fmt.Sprintf("{{.Quote}}%v{{.Quote}} %v ?", field, op),
 		value,
 	})
 	return qb
@@ -207,7 +207,7 @@ func (qb *{{.QueryBuilderName}}) WhereIn(field string, value interface{}) *{{.Qu
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", field, "IN"),
+		fmt.Sprintf("{{.Quote}}%v{{.Quote}} %v ?", field, "IN"),
 		value,
 	})
 	return qb

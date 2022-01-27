@@ -34,7 +34,7 @@ func init() {
 	}
 }
 
-func ParseRequest(c *gin.Context, request interface{}) {
+func ParseRequest(c *gin.Context, request interface{}) error {
 	err := c.ShouldBind(request)
 	var errStr string
 
@@ -49,11 +49,10 @@ func ParseRequest(c *gin.Context, request interface{}) {
 			errStr = errors.New("unknown error.").Error()
 		}
 
-		panic(errStr)
-		//helpers.ApiError(c,400,errStr)
+		return errors.New(errStr)
 	}
 
-	return
+	return nil
 }
 
 func Translate(errs validator.ValidationErrors) string {
