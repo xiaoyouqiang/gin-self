@@ -89,6 +89,13 @@ type {{.StructName}} struct {
  	{{if eq .DataType "time.Time"}} 
 		{{- $tag =  " time" | printf "%s" -}}
    	{{end}}
+	{{- if ne .ColumnKey.String "PRI" -}}
+		{{- $tag = " gorm:\"column:" | printf "%s%s" $tag -}}
+		{{- $tag =  .ColumnName | printf "%s%s" $tag -}}
+		{{- $tag = ";default:" | printf "%s%s" $tag -}}
+		{{- $tag =  .ColumnDefault.String | printf "%s%s" $tag -}}
+		{{- $tag =  "\"" | printf "%s%s"  $tag -}}
+	{{end}}
 	{{- $tag = " json:\"" | printf "%s%s" $tag -}}
 	{{- $tag =  .ColumnName | printf "%s%s" $tag -}}
 	{{- $tag =  "\"" | printf "%s%s"  $tag -}}
@@ -121,6 +128,9 @@ func (t {{.StructName}}) GetDeleteTimeFiled() string {
 
 //BeforeCreate 创建记录时自动维护 CreatedTime UpdatedTime 两个字段, 这两个字段名 根据自己的表来设置
 func (t {{.StructName}}) BeforeCreate(tx *gorm.DB) error {
+	if len(tx.Statement.Selects) > 0 {
+		tx.Statement.Selects = append(tx.Statement.Selects,"CreatedTime","UpdatedTime")
+	}
 	tx.Statement.SetColumn("CreatedTime", time.Now().Unix())
 	tx.Statement.SetColumn("UpdatedTime", time.Now().Unix())
 

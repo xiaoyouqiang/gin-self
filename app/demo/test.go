@@ -61,7 +61,7 @@ func Index2(c *gin.Context) {
 
 	err := request.ParseRequest(c, &req)
 	if  err != nil {
-		helpers.ApiError(c, e.ParamError)
+		helpers.ApiError(c, e.ParamError,err.Error())
 		return
 	}
 

@@ -6,8 +6,10 @@ import (
 	"gin-self/extend/utils/helpers"
 	"io"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
+	"net/http/httputil"
 	"os"
 	"runtime"
 	"strings"
@@ -49,10 +51,10 @@ func RecoveryWithWriter(out io.Writer, recovery ...RecoveryFunc) gin.HandlerFunc
 
 // CustomRecoveryWithWriter returns a middleware for a given writer that recovers from any panics and calls the provided handle func to handle it.
 func CustomRecoveryWithWriter(out io.Writer, handle RecoveryFunc) gin.HandlerFunc {
-	//var logger *log.Logger
-	//if out != nil {
-	//	logger = log.New(out, "\n\n\x1b[31m", log.LstdFlags)
-	//}
+	var logger *log.Logger
+	if out != nil {
+		logger = log.New(out, "\n\n\x1b[31m", log.LstdFlags)
+	}
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
@@ -70,26 +72,26 @@ func CustomRecoveryWithWriter(out io.Writer, handle RecoveryFunc) gin.HandlerFun
 				stack := fmt.Sprintf("%s", err) + "\n\t" + string(stack(3))
 				c.Request.Context().Value("trace").(*self_loger.TraceData).AddErrorStackLog(strings.Split(stack, "\n\t"))
 
-				//if logger != nil {
-				//	httpRequest, _ := httputil.DumpRequest(c.Request, false)
-				//	headers := strings.Split(string(httpRequest), "\r\n")
-				//	for idx, header := range headers {
-				//		current := strings.Split(header, ":")
-				//		if current[0] == "Authorization" {
-				//			headers[idx] = current[0] + ": *"
-				//		}
-				//	}
-				//	headersToStr := strings.Join(headers, "\r\n")
-				//	if brokenPipe {
-				//		logger.Printf("%s\n%s%s", err, headersToStr)
-				//	} else if gin.IsDebugging() {
-				//		logger.Printf("[Recovery] %s panic recovered:\n%s\n%s\n%s%s",
-				//			timeFormat(time.Now()), headersToStr, err, stack)
-				//	} else {
-				//		logger.Printf("[Recovery] %s panic recovered:\n%s\n%s%s",
-				//			timeFormat(time.Now()), err, stack)
-				//	}
-				//}
+				if logger != nil {
+					httpRequest, _ := httputil.DumpRequest(c.Request, false)
+					headers := strings.Split(string(httpRequest), "\r\n")
+					for idx, header := range headers {
+						current := strings.Split(header, ":")
+						if current[0] == "Authorization" {
+							headers[idx] = current[0] + ": *"
+						}
+					}
+					headersToStr := strings.Join(headers, "\r\n")
+					if brokenPipe {
+						logger.Printf("%s\n%s%s", err, headersToStr)
+					} else if gin.IsDebugging() {
+						logger.Printf("[Recovery] %s panic recovered:\n%s\n%s\n%s%s",
+							timeFormat(time.Now()), headersToStr, err, stack)
+					} else {
+						logger.Printf("[Recovery] %s panic recovered:\n%s\n%s%s",
+							timeFormat(time.Now()), err, stack)
+					}
+				}
 
 				if brokenPipe {
 					// If the connection is dead, we can't write a status to it.

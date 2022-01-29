@@ -3,6 +3,7 @@ package self_db
 import (
 	"context"
 	"fmt"
+	"gorm.io/gorm/logger"
 	"log"
 	"strings"
 	"time"
@@ -68,6 +69,7 @@ func connect(dbName string)  {
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, // 使用单数表名，启用该选项后，`User` 表将是`user`
 		},
+		Logger:logger.Default.LogMode(logger.Info),
 		SkipDefaultTransaction: true, //默认不开始事务 需要时 手动启动事务 以下有启动事务方法
 	})
 
@@ -95,4 +97,18 @@ func connect(dbName string)  {
 	db.Use(&LoggerPlugin{})
 
 	dbPool[dbName] = db
+}
+
+func Transaction(dbName string, f func() error) error {
+	Open()
+	db := GetDbConn(dbName)
+
+	err := db.Transaction(func(tx *gorm.DB) error {
+		dbPool[dbName] = tx
+		return f()
+	})
+
+	dbPool[dbName] = db
+
+	return err
 }

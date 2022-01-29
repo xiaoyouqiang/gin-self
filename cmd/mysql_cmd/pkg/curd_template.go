@@ -69,7 +69,7 @@ func (qb *{{.QueryBuilderName}}) WithNew() *{{.QueryBuilderName}} {
 	return qb
 }
 
-func (qb *{{.QueryBuilderName}}) getDbConn() *gorm.DB {
+func (qb *{{.QueryBuilderName}}) GetDbConn() *gorm.DB {
 	return qb.db
 }
 

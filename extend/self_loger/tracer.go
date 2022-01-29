@@ -1,8 +1,8 @@
 package self_loger
 
 import (
+	"gin-self/extend/utils/function"
 	"github.com/gin-gonic/gin"
-	"github.com/segmentio/ksuid"
 	"github.com/sirupsen/logrus"
 	"sync"
 	"sync/atomic"
@@ -45,7 +45,7 @@ type redisLog struct {
 
 func NewTrace() *TraceData {
 	traceData := TracePool.Get().(*TraceData)
-	traceData.traceId = GenUUID()
+	traceData.traceId = function.GenUUID()
 	return traceData
 }
 
@@ -149,9 +149,4 @@ func (t *TraceData) ValueRedisInfo() []logrus.Fields {
 func (t *TraceData) ValueErrorInfo() []string {
 
 	return t.GetErrorStackLog()
-}
-
-func GenUUID() string {
-	id := ksuid.New()
-	return id.String()
 }
