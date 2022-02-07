@@ -35,7 +35,7 @@ gin-self 寓意：适合自己的框架、简单使用、方便扩展，不过�
 
 ### 文档
 
-https://www.yuque.com/itdaxia/qpr03u/gor829
+https://github.com/xiaoyouqiang/gin-self
 
 ### 作者
 
